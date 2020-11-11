@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/inside: "true"
+        io.kompose.network/outside: "true"
+        io.kompose.service: nginx
+    spec:
+      containers:
+      - image: nginx:stable-alpine
+        imagePullPolicy: ""
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources: {}
+        volumeMounts:
+          - name: nginx-claim0
+            mountPath: /usr/share/nginx/html/
+          - name: nginx-claim1
+            mountPath: /etc/nginx/conf.d/
+      volumes:
+        - name: nginx-claim0
+          hostPath:
+            path: /home/docker/code/
+        - name: nginx-claim1
+          hostPath:
+            path: /home/docker/nginx/
+                  
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: nginx-claim0
+        persistentVolumeClaim:
+          claimName: nginx-claim0
+      - name: nginx-claim1
+        persistentVolumeClaim:
+          claimName: nginx-claim1
+status: {}

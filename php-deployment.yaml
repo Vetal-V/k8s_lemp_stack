@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: php
+  name: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: php
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/inside: "true"
+        io.kompose.service: php
+    spec:
+      containers:
+      - image: vetalvr/lab4_php-alpine:latest
+        imagePullPolicy: ""
+        name: php
+        ports:
+        - containerPort: 9000
+        resources: {}
+        volumeMounts:
+          - name: php-claim0
+            mountPath: /code
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+        - name: php-claim0
+          hostPath:
+            path: /home/docker/code
+status: {}
