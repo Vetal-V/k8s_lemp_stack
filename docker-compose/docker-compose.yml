@@ -1,0 +1,58 @@
+version: '3.7'
+
+networks:
+    inside:
+    outside:
+
+services:
+    nginx:
+        image: nginx:stable-alpine
+        restart: always
+        ports:
+            - "8080:80"
+        volumes:
+            - ./code:/code
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - php
+        networks:
+            - inside
+            - outside
+
+    mariaDB:
+        image: mariadb:latest
+        restart: always
+        ports:
+            - "3306:3306"
+        depends_on:
+            - nginx
+        env_file: .env
+        environment:
+            - MYSQL_DATABASE=test_mariaDB
+            - MYSQL_ROOT_PASSWORD=654321
+        networks:
+            - inside    
+
+    php:
+        image: vetalvr/lab4_php-alpine:latest
+        restart: always
+        volumes:
+            - ./code:/code
+        ports:
+            - "9000:9000"       
+        networks:
+            - inside
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        ports:
+            - "8183:80"
+        env_file: .env
+        environment:        
+            PMA_ARBITRARY: 1
+        depends_on:
+            - mariaDB
+        networks:
+            - inside
+            - outside
