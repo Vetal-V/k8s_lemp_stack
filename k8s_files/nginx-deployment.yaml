@@ -41,10 +41,10 @@ spec:
       volumes:
         - name: nginx-claim0
           hostPath:
-            path: /home/docker/code/
+            path: ./code/
         - name: nginx-claim1
           hostPath:
-            path: /home/docker/nginx/
+            path: ./nginx/
                   
       restartPolicy: Always
       serviceAccountName: ""

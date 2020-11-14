@@ -40,5 +40,5 @@ spec:
       volumes:
         - name: php-claim0
           hostPath:
-            path: /home/docker/code
+            path: ./code/
 status: {}
