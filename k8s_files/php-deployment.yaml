@@ -35,10 +35,10 @@ spec:
         volumeMounts:
           - name: php-claim0
             mountPath: /code
-      restartPolicy: Always
+    volumes:
+      - name: php-claim0
+        hostPath:
+          path: /home/master/k8s/k8s_lemp_stack/k8s_files/code/
+    restartPolicy: Always
       serviceAccountName: ""
-      volumes:
-        - name: php-claim0
-          hostPath:
-            path: ./code/
 status: {}

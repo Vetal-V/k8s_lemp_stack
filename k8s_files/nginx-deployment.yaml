@@ -38,13 +38,13 @@ spec:
             mountPath: /usr/share/nginx/html/
           - name: nginx-claim1
             mountPath: /etc/nginx/conf.d/
-      volumes:
-        - name: nginx-claim0
-          hostPath:
-            path: ./code/
-        - name: nginx-claim1
-          hostPath:
-            path: ./nginx/
+    volumes:
+      - name: nginx-claim0
+        hostPath:
+          path: /home/master/k8s/k8s_lemp_stack/k8s_files/code/
+      - name: nginx-claim1
+        hostPath:
+          path: /home/master/k8s/k8s_lemp_stack/k8s_files/nginx/
                   
       restartPolicy: Always
       serviceAccountName: ""
