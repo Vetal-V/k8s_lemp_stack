@@ -35,7 +35,7 @@ spec:
         resources: {}
         volumeMounts:
           - name: nginx-claim0
-            mountPath: /usr/share/nginx/html/
+            mountPath: /var/www/
           - name: nginx-claim1
             mountPath: /etc/nginx/conf.d/
       restartPolicy: Always
