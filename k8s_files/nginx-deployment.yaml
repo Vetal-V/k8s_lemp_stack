@@ -35,9 +35,9 @@ spec:
         resources: {}
         volumeMounts:
           - name: nginx-claim0
-            mountPath: /var/www
+            mountPath: /code
           - name: nginx-claim1
-            mountPath: /etc/nginx/conf.d/
+            mountPath: /etc/nginx/conf.d
       restartPolicy: Always
       serviceAccountName: ""
       volumes:
@@ -46,5 +46,5 @@ spec:
             path: /home/master/k8s/k8s_lemp_stack/k8s_files/code
         - name: nginx-claim1
           hostPath:
-            path: /home/master/k8s/k8s_lemp_stack/k8s_files/nginx/               
+            path: /home/master/k8s/k8s_lemp_stack/k8s_files/nginx              
 status: {}
