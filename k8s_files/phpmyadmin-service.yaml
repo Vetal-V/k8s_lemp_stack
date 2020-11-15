@@ -9,11 +9,11 @@ metadata:
     io.kompose.service: phpmyadmin
   name: phpmyadmin
 spec:
-  # type: NodePort  
+  type: NodePort  
   ports:
   - name: "8183"
     port: 8183
     targetPort: 80
-    # nodePort: 30100
+    nodePort: 30100
   selector:
     io.kompose.service: phpmyadmin
