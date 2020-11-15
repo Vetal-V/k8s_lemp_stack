@@ -14,7 +14,6 @@ spec:
   - name: "9000"
     port: 9000
     targetPort: 9000
+    nodePort: 30200
   selector:
     io.kompose.service: php
-# status:
-#   loadBalancer: {}

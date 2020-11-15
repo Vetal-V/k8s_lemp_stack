@@ -14,7 +14,6 @@ spec:
   - name: "8183"
     port: 8183
     targetPort: 80
+    nodePort: 30100
   selector:
     io.kompose.service: phpmyadmin
-# status:
-#   loadBalancer: {}

@@ -14,8 +14,6 @@ spec:
   - name: "8080"
     port: 8080
     targetPort: 80
+    nodePort: 30300
   selector:
     io.kompose.service: nginx
-# status:
-#   loadBalancer: {}
-
