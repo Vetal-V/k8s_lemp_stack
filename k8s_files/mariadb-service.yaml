@@ -9,12 +9,11 @@ metadata:
     io.kompose.service: mariadb
   name: mariadb
 spec:
-  type: NodePort 
+  # type: NodePort 
   ports:
   - name: "3306"
     port: 3306
     targetPort: 3306
+    # nodePort: 30400
   selector:
     io.kompose.service: mariadb
-# status:
-#   loadBalancer: {}

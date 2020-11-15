@@ -9,12 +9,11 @@ metadata:
     io.kompose.service: php
   name: php
 spec:
-  type: NodePort 
+  # type: NodePort 
   ports:
   - name: "9000"
     port: 9000
     targetPort: 9000
+    # nodePort: 30200
   selector:
     io.kompose.service: php
-# status:
-#   loadBalancer: {}
