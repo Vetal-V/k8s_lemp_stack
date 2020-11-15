@@ -1,9 +1,5 @@
 <?php
 	header("Content-Type: text/html; charset=UTF-8");
-	// $host = $_ENV['MYSQL_HOST'];
-	// $username = $_ENV['MYSQL_USER'];
-	// $password = $_ENV['MYSQL_PASSWORD'];
-	// $database = $_ENV['MYSQL_DATABASE'];
 	$host = "mariaDB";
 	$username = "root";
 	$password = "654321";
