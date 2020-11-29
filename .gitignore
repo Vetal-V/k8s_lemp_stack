@@ -1,1 +1,17 @@
-./test.txt
+# my test file
+test.txt
+
+# files with credentials
+rootkey.csv
+variables.tf
+
+#private key file
+*.pem
+
+#terraform plugins
+.terraform/
+
+#terraform state files
+.terraform.tfstate.lock.info
+terraform.tfstate
+terraform.tfstate.backup
