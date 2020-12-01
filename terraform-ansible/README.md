@@ -28,7 +28,7 @@ variable "ami_key_pair_name" {
     default = "ec2_ubuntu20_lemp_key"
 }
 ```
-- in AWS EC2 create key pair (in this example `ec2_ubuntu20_lemp_key`) and save in repo folder `./lemp-stack/terraform-ansible/ec2_ubuntu20_lemp_key.pem`.
+- in AWS EC2 create key pair (in this example `ec2_ubuntu20_lemp_key`) and save in repo folder `./lemp-stack/terraform-ansible/ansible/ec2_ubuntu20_lemp_key.pem`.
 
 ## Run terraform
 
@@ -39,13 +39,18 @@ terraform apply
 ```
 
 ### Run ansible
+- change password for database in [file](https://github.com/Vetal-V/lemp-stack/tree/main/terraform-ansible/ansible/roles/mysql/default/main.yml):
+```
+mysql_root_password: "mypassword"
+http_conf: "nginx.conf"
+http_port: "80"
+```
+
+- run ansible playbook:
 ```
 cd ../ansible
 chmod +x setup_ansible.sh
 ./setup_ansible.sh
 ansible-playbook -i hosts -u ubuntu main.yml
+
 ```
-
-
-[local]
-IP_ADDRESS ansible_connection=ssh ansible_ssh_user=ubuntu ansible_ssh_private_key_file=PATH_KEY 

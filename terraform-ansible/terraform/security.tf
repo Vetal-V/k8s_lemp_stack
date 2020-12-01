@@ -8,9 +8,25 @@ resource "aws_security_group" "ec2_ubuntu20_lemp_security" {
         "0.0.0.0/0"
         ]
 
-    from_port = 22
+        from_port = 22
         to_port = 22
         protocol = "tcp"
+    }
+    ingress {
+        cidr_blocks = [
+        "0.0.0.0/0"
+        ]
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+    }
+    ingress {
+        cidr_blocks = [
+        "0.0.0.0/0"
+        ]
+        from_port = 80
+        to_port = 80
+        protocol = "udp"
     }
 
     //output rule - allow all

@@ -1,4 +1,14 @@
 ---
+- name: Stop Apache2
+  service:
+    name: apache2
+    state: stopped
+
+- name: Reload Nginx
+  service:
+    name: nginx
+    state: reloaded
+
 - name: Restart Nginx
   service:
     name: nginx
@@ -11,5 +21,5 @@
 
 - name: Restart PHP7-FPM
   service:
-    name: php7.0-fpm
+    name: php7.2-fpm
     state: restarted

@@ -1,8 +1,7 @@
 #!/bin/bash
 
-cd ..
 path_key=`pwd`'/ec2_ubuntu20_lemp_key.pem'
-cd terraform
+cd ../terraform
 public_ip=`terraform output public_ip`
 
 cd ../ansible/

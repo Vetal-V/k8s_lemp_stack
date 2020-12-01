@@ -1,0 +1,46 @@
+---
+- name: Start MySQL
+  service: name=mysql state=started
+  become: true
+
+- name: Ensure mysql is running and starts on boot
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Ensure mysql root password is updated for all root accounts
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    password: "{{ mysql_root_password }}"
+    priv: '*.*:ALL,GRANT'
+    check_implicit_admin: true
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+  notify: Restart MySQL
+
+- name: Copy the templates to their respestive destination
+  template:
+    src: "root.cnf.j2"
+    dest: "~/.my.cnf"
+    owner: root 
+    group: root 
+    mode: 0600
+
+- name: Ensure Anonymous user(s) are not in the database
+  mysql_user:
+    name: ''
+    host: 'localhost'
+    state: absent
+
+- name: Remove the test database
+  mysql_db:
+    name: test
+    state: absent
+  notify:
+    - Restart MySQL

@@ -1,0 +1,17 @@
+---
+- name: Sets Up PHP Info Page
+  template:
+    src: "info.php.j2"
+    dest: "/var/www/html/info.php"
+
+- name: Copy the templates to their respestive destination
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+  with_items:
+    - { src: 'www.conf.j2', dest: '/etc/php/7.2/fpm/pool.d/www.conf' }
+    - { src: 'php.ini.j2', dest: '/etc/php/7.2/fpm/php.ini' }
+  notify:
+    - Restart PHP7-FPM 

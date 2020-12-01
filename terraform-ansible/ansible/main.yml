@@ -3,4 +3,8 @@
     become: yes
     user: root
     roles:
-      - LEMP
+      - common
+      - nginx
+      - mysql
+      - php
+      - phpmyadmin
