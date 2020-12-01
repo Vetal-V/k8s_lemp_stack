@@ -39,7 +39,7 @@ terraform apply
 ```
 
 ### Run ansible
-- change password for database in [file](https://github.com/Vetal-V/lemp-stack/tree/main/terraform-ansible/ansible/roles/mysql/default/main.yml):
+- change password for database in [file](https://github.com/Vetal-V/lemp-stack/blob/main/terraform-ansible/ansible/roles/mysql/defaults/main.yml):
 ```
 mysql_root_password: "mypassword"
 http_conf: "nginx.conf"
