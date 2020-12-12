@@ -1,0 +1,19 @@
+---
+  - hosts: db
+    become: yes
+    user: root
+    roles:
+      - mysql
+      - phpmyadmin
+
+  - hosts: backend
+    become: yes
+    user: root
+    roles:
+      - php
+
+  - hosts: frontend
+    become: yes
+    user: root
+    roles:
+      - nginx

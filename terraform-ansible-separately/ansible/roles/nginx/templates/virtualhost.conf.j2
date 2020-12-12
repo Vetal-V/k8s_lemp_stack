@@ -1,0 +1,28 @@
+server {
+        listen 80;
+        listen [::]:80;
+
+
+        root /var/www/html;
+
+        location ~ \.php$ {
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                set $path_info $fastcgi_path_info;
+                fastcgi_param PATH_INFO /var/www/html/$fastcgi_path_info;
+                fastcgi_index index.php;
+                include fastcgi.conf;
+                fastcgi_pass {{ php_address }}:9000;
+        }
+
+        # Deny access to .htaccess files
+        location ~ /\.ht {
+                deny all;
+        }
+
+        location / {
+                try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        error_log /var/log/nginx/site_error.log;
+        access_log /var/log/nginx/site_access.log;
+}

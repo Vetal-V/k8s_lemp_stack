@@ -1,0 +1,60 @@
+---
+- name: Install Prerequisites
+  apt: name='aptitude' update_cache=yes state=latest force_apt_get=yes
+
+- name: apt-get update and install nginx
+  apt: name=nginx state=latest update_cache=true
+  register: nginxinstalled
+  notify:
+      - Restart Nginx
+
+- name: Sets Nginx conf file
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    owner: root 
+    group: root 
+    mode: 0600
+  notify:
+    - Restart Nginx
+
+- name: Sets site folder
+  copy:
+    src: "templates/site/"
+    dest: "/var/www/html"
+    owner: root 
+    group: root 
+    mode: 0600    
+
+- name: Set virtualhost file
+  template:
+    src: "virtualhost.conf.j2"
+    dest: "/etc/nginx/sites-available/nginx.conf"
+    owner: root 
+    group: root 
+    mode: 0600
+
+- name: Enables new site
+  file:
+    src: "/etc/nginx/sites-available/nginx.conf"
+    dest: "/etc/nginx/sites-enabled/nginx.conf"
+    state: link
+  notify: 
+    - Reload Nginx
+
+- name: Perform action of the desired files
+  file:
+    src: "{{ item.src | default(omit) }}"
+    dest: "{{ item.dest }}"
+    state: "{{ item.state }}"
+  with_items:
+    - { dest: '/etc/nginx/sites-enabled/default', state: 'absent' }
+    - { dest: '/var/www/html/index.nginx-debian.html', state: 'absent' }
+    - { src: '/etc/nginx/sites-available/nginx.conf', dest: '/etc/nginx/sites-enabled/nginx.conf', state: 'link' }
+
+
+- name: "UFW - Allow HTTP on port 80"
+  ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
