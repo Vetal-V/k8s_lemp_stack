@@ -9,7 +9,23 @@
 - create file `./terraform/variables.tf` with the following content:
 ```
 variable "region" {
-  default = "us-east-2"
+    default = "us-east-2"
+}
+
+variable "availability_zone" {
+    default = "us-east-2b"
+}
+
+variable "instance_count" {
+    default = "3"
+}
+
+variable "ami_id" {
+    default = "ami-0dd9f0e7df0f0a138"
+}
+
+variable "ami_key_pair_name" {
+    default = "ec2_ubuntu20_lemp_key"
 }
 
 variable "access_key"{
@@ -18,14 +34,6 @@ variable "access_key"{
 
 variable "secret_key"{
     default = "YOUR_SECRET_KEY"
-}
-
-variable "ami_id" {
-    default = "ami-0a91cd140a1fc148a"
-}
-
-variable "ami_key_pair_name" {
-    default = "ec2_ubuntu20_lemp_key"
 }
 ```
 - in AWS EC2 create key pair (in this example `ec2_ubuntu20_lemp_key`) and save in repo folder `./lemp-stack/terraform-ansible/ansible/ec2_ubuntu20_lemp_key.pem`.
