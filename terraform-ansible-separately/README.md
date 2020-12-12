@@ -38,7 +38,7 @@ terraform apply
 ```
 
 ## Run ansible
-- change password for database in [file](https://github.com/Vetal-V/lemp-stack/blob/main/terraform-ansible/ansible/group_var/all/all_vars.yml):
+- change password for database in [file](https://github.com/Vetal-V/lemp-stack/blob/main/terraform-ansible-separately/ansible/group_vars/all/all_vars.yml):
 ```
 mysql_root_password: "mypassword"
 ```
