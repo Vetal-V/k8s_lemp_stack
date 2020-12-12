@@ -1,0 +1,27 @@
+<?php
+	header("Content-Type: text/html; charset=UTF-8");
+	$host = "{{ db_address }}";
+	$username = "root";
+	$password = "mypassword";
+	$database = "test_mysql";
+
+	try {
+		$connection = new mysqli($host, $username, $password, $database);
+		$connection->set_charset("utf8");
+		if ($connection->connect_error) {
+			die("Connection failed");
+		}
+	
+		$sql = "SELECT * FROM ISD_db";
+		$result = $connection->query($sql);
+
+		while ($row = $result->fetch_assoc()) {
+		 	echo "Лабораторна робота №" . $row['id'] . " \t Тема. " . $row['theme'];
+		 	echo "<br>";
+		}
+	} catch (Exception $e) {
+		echo 'Exception: ',  $e->getMessage(), "\n";
+	}
+
+	echo phpinfo();
+?>

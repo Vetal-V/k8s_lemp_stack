@@ -1,0 +1,8 @@
+---
+- name: Restart PHP7-FPM
+  service:
+    name: php7.2-fpm
+    state: restarted
+
+- name: Restart apache2
+  service: name=apache2 state=restarted

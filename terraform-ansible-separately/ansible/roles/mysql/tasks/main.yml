@@ -1,0 +1,83 @@
+---
+- name: Install MySQL
+  apt: name={{ item }} update_cache=yes state=latest
+  loop: ['mysql-server', 'python3-pip', 'mysql-client', 'libmysqlclient-dev', 'python3-dev', 'python3-mysqldb', 'python3-pymysql']
+
+- name: Start MySQL
+  service: name=mysql state=started
+  become: true
+
+- name: Ensure mysql is running and starts on boot
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Set a new root password
+  mysql_user: check_implicit_admin=yes
+              login_user=root
+              login_password={{ mysql_root_password }}
+              user=root
+              password={{ mysql_root_password }}
+              host={{ item }}
+              priv='*.*:ALL,GRANT'
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - "{{ php_address }}"
+  notify: 
+    Restart MySQL
+
+- name: Copy the templates to their respestive destination
+  template:
+    src: "root.cnf.j2"
+    dest: "~/.my.cnf"
+    owner: root 
+    group: root 
+    mode: 0600
+
+- name: Ensure Anonymous user(s) are not in the database
+  mysql_user:
+    name: ''
+    host: 'localhost'
+    state: absent
+
+- name: Remove the test database
+  mysql_db:
+    name: test
+    state: absent
+  notify:
+    - Restart MySQL
+
+- name: Copy the file
+  template:
+    src: "backup_isd.sql.j2"
+    dest: "/tmp/backup_isd.sql"
+
+- name: Remove the existing database
+  mysql_db:
+    name: test_mysql
+    state: absent
+
+- name: Restore database
+  mysql_db:
+    name: test_mysql
+    state: import
+    target: /tmp/backup_isd.sql
+
+- name: Copy the templates to their respestive destination
+  template:
+    src: "mysqld.cnf.j2"
+    dest: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+    owner: root 
+    group: root 
+    mode: 0600
+  notify:
+    - Restart MySQL
+
+- name: Allow all access to tcp port 3306
+  ufw:
+    rule: allow
+    port: '3306'
+    proto: tcp

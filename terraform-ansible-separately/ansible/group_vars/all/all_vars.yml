@@ -1,0 +1,4 @@
+---
+mysql_root_password: "mypassword"
+php_address: "PHP_ADDRESS"
+db_address: "DB_ADDRESS"

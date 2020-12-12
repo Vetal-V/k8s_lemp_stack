@@ -1,0 +1,43 @@
+---
+- name: Install Prerequisites
+  apt: name='aptitude' update_cache=yes state=latest force_apt_get=yes
+
+- name: Install PHP7-FPM
+  apt: name={{ item }} update_cache=yes state=latest
+  loop: ['php', 'php-common', 'php-cli', 'php-dev', 'php-fpm', 'php-mysql', 'php-mbstring', 'php-gd']
+
+- name: Copy the templates to their respestive destination
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+  with_items:
+    - { src: 'www.conf.j2', dest: '/etc/php/7.2/fpm/pool.d/www.conf' }
+    - { src: 'php.ini.j2', dest: '/etc/php/7.2/fpm/php.ini' }
+  notify:
+    - Restart PHP7-FPM 
+    - Restart apache2
+
+- name: Sets Up PHP Info Page
+  template:
+    src: "index.php.j2"
+    dest: "/var/www/html/index.php"
+    owner: root 
+    group: root 
+    mode: 0777
+  
+
+- name: Sets Up dir.conf
+  template:
+    src: "dir.conf.j2"
+    dest: "/etc/apache2/mods-enabled/dir.conf"
+    owner: root 
+    group: root 
+    mode: 0777
+
+- name: Allow all access to tcp port 80
+  ufw:
+    rule: allow
+    port: '9000'
+    proto: tcp

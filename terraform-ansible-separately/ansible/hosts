@@ -1,0 +1,8 @@
+[frontend]
+IP_ADDRESS1 ansible_connection=ssh ansible_ssh_user=ubuntu ansible_ssh_private_key_file=PATH_KEY 
+
+[backend]
+IP_ADDRESS2 ansible_connection=ssh ansible_ssh_user=ubuntu ansible_ssh_private_key_file=PATH_KEY 
+
+[db]
+IP_ADDRESS3 ansible_connection=ssh ansible_ssh_user=ubuntu ansible_ssh_private_key_file=PATH_KEY 

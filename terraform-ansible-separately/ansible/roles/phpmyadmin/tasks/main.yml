@@ -1,0 +1,33 @@
+---
+- name: Install Prerequisites
+  apt: name='aptitude' update_cache=yes state=latest force_apt_get=yes
+  
+- name: debconf for phpmyadmin
+  debconf:
+    name: phpmyadmin
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  with_items:
+    - { question: 'phpmyadmin/dbconfig-install', value: 'true', vtype: 'boolean' }
+    - { question: 'phpmyadmin/app-password-confirm', value: "{{ mysql_root_password }}", vtype: 'password' }
+    - { question: 'phpmyadmin/mysql/admin-pass', value: "{{ mysql_root_password }}", vtype: 'password' }
+    - { question: 'phpmyadmin/mysql/app-pass', value: "{{ mysql_root_password }}", vtype: 'password' }
+    - { question: 'phpmyadmin/reconfigure-webserver', value: '', vtype: 'multiselect' }
+
+- name: Install the phpmyadmin
+  apt:
+    name: phpmyadmin
+    state: present
+
+- name: Configure site for phpmyadmin
+  file:
+    path: "/var/www/html/phpmyadmin"
+    src: "/usr/share/phpmyadmin"
+    state: link
+
+- name: "UFW - Allow HTTP on port 80"
+  ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
